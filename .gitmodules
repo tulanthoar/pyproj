@@ -1,0 +1,15 @@
+[submodule "pycharm-flight"]
+	path = pycharm-flight
+	url = https://github.com/tulanthoar/pycharm-flight.git
+[submodule "py-practice"]
+	path = py-practice
+	url = https://github.com/tulanthoar/py-practice.git
+[submodule "tldr"]
+	path = tldr
+	url = https://github.com/tulanthoar/tldr.git
+[submodule "flighttimes"]
+	path = flighttimes
+	url = https://github.com/tulanthoar/flighttimes.git
+[submodule "lighttimer"]
+	path = lighttimer
+	url = https://github.com/tulanthoar/lighttimer.git
