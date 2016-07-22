@@ -1,0 +1,8 @@
+setup.py
+xmenu.py
+xmenu.egg-info/PKG-INFO
+xmenu.egg-info/SOURCES.txt
+xmenu.egg-info/dependency_links.txt
+xmenu.egg-info/entry_points.txt
+xmenu.egg-info/requires.txt
+xmenu.egg-info/top_level.txt

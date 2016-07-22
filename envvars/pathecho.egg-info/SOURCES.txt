@@ -1,0 +1,11 @@
+hello.py
+inout.py
+pathecho.py
+setup.py
+userecho.py
+pathecho.egg-info/PKG-INFO
+pathecho.egg-info/SOURCES.txt
+pathecho.egg-info/dependency_links.txt
+pathecho.egg-info/entry_points.txt
+pathecho.egg-info/requires.txt
+pathecho.egg-info/top_level.txt

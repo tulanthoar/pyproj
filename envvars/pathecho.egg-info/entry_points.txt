@@ -1,0 +1,7 @@
+
+        [console_scripts]
+        pathecho=pathecho:perform
+        userecho=userecho:greet
+        hello=hello:hellow
+        inout=ioctl:iocli
+    
