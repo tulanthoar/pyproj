@@ -59,7 +59,7 @@ def xdomenu():
     """interacts with a simple menu."""
     xmc = Command('xmctl')
     char_to_bin = {'q': (xmc, 'srmenu'),
-                   'c': (xmc, 'clipcmd'),
+                   'c': (xmc, 'clipmenu'),
                    'j': (xmc, 'jmenu'),
                    'n': (xmc, 'nvim'),
                    'h': (xmc, 'htop'),
