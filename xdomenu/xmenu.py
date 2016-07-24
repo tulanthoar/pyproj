@@ -58,14 +58,12 @@ def print_menu(persist):
 def xdomenu():
     """interacts with a simple menu."""
     xmc = Command('xmctl')
-    urx = Command('urxvt')
-    clip = Command('clipmenu')
     char_to_bin = {'q': (xmc, 'srmenu'),
-                   'c': (clip, "-z -w 800 -l 50 -p clip".split()),
+                   'c': (xmc, 'clipcmd'),
                    'j': (xmc, 'jmenu'),
                    'n': (xmc, 'nvim'),
-                   'h': (urx, ['-e', 'htop']),
-                   'u': (urx, ['-name', 'urxvt', '-n', 'urxvt']),
+                   'h': (xmc, 'htop'),
+                   'u': (xmc, 'myterm'),
                    'i': (xmc, 'ipython'),
                    'p': (xmc, 'perl'),
                    'r': (xmc, 'ranger'),
@@ -80,7 +78,7 @@ def xdomenu():
         char = getchar()
         if char == '\x1b':
             raise KeyboardInterrupt
-        if char == '\t':
+        elif char == '\t':
             if not persistent:
                 persistent = True
                 echo('Persistence on')
@@ -88,13 +86,16 @@ def xdomenu():
                 persistent = False
                 echo('Persistence off')
             continue
-        if char == ' ':
+        elif char == ' ':
             xdo(['key', 'Menu'])
             xmc('nextempty')
             xdo(['key', 'Menu'])
             continue
-        xdo(['key', 'Menu'])
-        if char == 'b':
+        elif char == 'b':
+            if persistent:
+                xmc('minone')
+            else:
+                xmc('suicide')
             if not class_is_mapped(hinter, 'urxv'):
                 xmc('byobu')
                 sleep(1)
@@ -106,9 +107,15 @@ def xdomenu():
         else:
             try:
                 (cmd, opts) = char_to_bin[char]
+                if persistent:
+                    xmc('minone')
+                else:
+                    xmc('suicide')
                 cmd(opts)
             except KeyError:
                 echo('key ' + char + ' not recognized')
+                continue
         if persistent:
-            sleep(0.1)
             xdo(['key', 'Menu'])
+        else:
+            raise KeyboardInterrupt
