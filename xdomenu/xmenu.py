@@ -5,14 +5,6 @@ from sh import Command
 from ewmh import EWMH
 
 
-def active_class(ewmh_obj):
-    '''returns the focused window class after 200ms'''
-    sleep(0.3)
-    win = ewmh_obj.getActiveWindow()
-    win_class = win.get_wm_class()
-    return win_class
-
-
 def class_is_mapped(hinter, class_name):
     '''use ewmh to see if a window with class name is mapped'''
     for win in hinter.getClientListStacking():
@@ -58,44 +50,39 @@ def print_menu(persist):
 def xdomenu():
     """interacts with a simple menu."""
     xmc = Command('xmctl')
-    char_to_bin = {'q': (xmc, 'srmenu'),
-                   'c': (xmc, 'clipmenu'),
-                   'j': (xmc, 'jmenu'),
-                   'n': (xmc, 'nvim'),
-                   'h': (xmc, 'htop'),
-                   'u': (xmc, 'myterm'),
-                   'i': (xmc, 'ipython'),
-                   'p': (xmc, 'perl'),
-                   'r': (xmc, 'ranger'),
-                   'a': (xmc, 'allpads'),
-                   'b': (xmc, 'byobu'),
-                   'P': (xmc, 'pomodoro')}
+    char_to_bin = {'q': ('srmenu'),
+                   'c': ('clipmenu'),
+                   'j': ('jmenu'),
+                   'n': ('nvim'),
+                   'h': ('htop'),
+                   'u': ('myterm'),
+                   'i': ('ipython'),
+                   'p': ('perl'),
+                   'r': ('ranger'),
+                   'a': ('allpads'),
+                   'b': ('byobu'),
+                   'P': ('pomodoro')}
     xdo = Command('xdotool')
     hinter = EWMH()
     persistent = False
     print_menu(persistent)
     while True:
         char = getchar()
-        if char == '\x1b':
-            raise KeyboardInterrupt
-        elif char == '\t':
-            if not persistent:
-                persistent = True
-                echo('Persistence on')
-            else:
-                persistent = False
-                echo('Persistence off')
+        if char == '\t':
+            persistent = not persistent
+            echo("\n")
+            print_menu(persistent)
             continue
         elif char == ' ':
             xdo(['key', 'Menu'])
             xmc('nextempty')
             xdo(['key', 'Menu'])
             continue
-        elif char == 'b':
-            if persistent:
-                xmc('minone')
-            else:
-                xmc('suicide')
+        if persistent:
+            xmc('minone')
+        else:
+            xmc('suicide')
+        if char == 'b':
             if not class_is_mapped(hinter, 'urxv'):
                 xmc('byobu')
                 sleep(1)
@@ -105,17 +92,9 @@ def xdomenu():
                 else:
                     xmc('bringbyo')
         else:
-            try:
-                (cmd, opts) = char_to_bin[char]
-                if persistent:
-                    xmc('minone')
-                else:
-                    xmc('suicide')
-                cmd(opts)
-            except KeyError:
-                echo('key ' + char + ' not recognized')
-                continue
+            (opts) = char_to_bin[char]
+            xmc(opts)
         if persistent:
             xdo(['key', 'Menu'])
-        else:
-            raise KeyboardInterrupt
+            continue
+        raise KeyboardInterrupt
